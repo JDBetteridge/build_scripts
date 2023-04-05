@@ -5,11 +5,11 @@
 #     $PYTHON -m venv py3$($PYTHON -c "import sys; print(sys.version_info.minor)")
 # done
 
-export PETSC_DIR=/opt/petsc
-export PETSC_ARCH=firedrake-opt
+export PETSC_DIR=/opt/petsc/firedrake
+export PETSC_ARCH=full-opt
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
-for PYENV in pySYS py37 py38 py39 py310 py311
+for PYENV in py38 py39 py310 py311
 do
     . $PYENV/bin/activate
     echo ================
@@ -28,11 +28,11 @@ do
 done
 
 # debug
-export PETSC_DIR=/opt/petsc
-export PETSC_ARCH=firedrake-debug
+export PETSC_DIR=/opt/petsc/firedrake
+export PETSC_ARCH=full-debug
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
-for PYENV in pySYS py37 py38 py39 py310 py311
+for PYENV in py38 py39 py310 py311
 do
     . $PYENV/bin/activate
     echo ================
@@ -52,11 +52,11 @@ do
 done
 
 # Complex
-export PETSC_DIR=/opt/petsc
-export PETSC_ARCH=firedrake-complex-opt
+export PETSC_DIR=/opt/petsc/firedrake
+export PETSC_ARCH=complex-opt
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
-for PYENV in pySYS py37 py38 py39 py310 py311
+for PYENV in py38 py39 py310 py311
 do
     . $PYENV/bin/activate
     echo ================

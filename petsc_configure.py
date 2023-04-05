@@ -13,7 +13,6 @@ parser.add_argument(
 args, unknown = parser.parse_known_args()
 
 base_options = [
-    f'--prefix=/opt/petsc/{args.name}',
     '--with-c2html=0',
     '--with-cxx-dialext=C++11',
     '--with-fortran-bindings=0',
@@ -57,18 +56,16 @@ firedrake_not_complex = minimal_not_complex + ['--download-ml']
 firedrake_complex = ['--with-scalar-type=complex']
 
 custom_conf = {
-    'main-vanilla-debug': debug,
-    'main-vanilla-opt': opt,
-    'firedrake-minimal-debug': debug + minimal + minimal_not_complex,
-    'firedrake-minimal-opt': opt + minimal + minimal_not_complex,
-    'firedrake-debug': debug + firedrake + firedrake_not_complex,
-    'firedrake-opt': opt + firedrake + firedrake_not_complex,
-    'firedrake-complex-minimal-debug': debug + minimal + firedrake_complex,
-    'firedrake-complex-minimal-opt': opt + minimal + firedrake_complex,
-    'firedrake-complex-debug': debug + firedrake + firedrake_complex,
-    'firedrake-complex-opt': opt + firedrake + firedrake_complex,
-    'sv-build-debug': debug + firedrake,
-    'sv-build-opt': opt + firedrake,
+    'vanilla-debug': debug,
+    'vanilla-opt': opt,
+    'minimal-debug': debug + minimal + minimal_not_complex,
+    'minimal-opt': opt + minimal + minimal_not_complex,
+    'full-debug': debug + firedrake + firedrake_not_complex,
+    'full-opt': opt + firedrake + firedrake_not_complex,
+    'complex-minimal-debug': debug + minimal + firedrake_complex,
+    'complex-minimal-opt': opt + minimal + firedrake_complex,
+    'complex-debug': debug + firedrake + firedrake_complex,
+    'complex-opt': opt + firedrake + firedrake_complex,
     'custom': unknown,
     'test': unknown
 }
