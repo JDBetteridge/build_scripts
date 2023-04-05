@@ -22,6 +22,8 @@
 # cp build_scripts/petsc_configure.py firedrake-petsc/my_builds/configure.py
 # sudo mkdir -p /opt/petsc
 # sudo chown jack /opt/petsc
+# mkdir /opt/petsc/upstream
+# mkdir /opt/petsc/firedrake
 
 ## mkdir -p /share/upstream-petsc /share/firedrake-petsc
 ## /etc/fstab:
@@ -41,26 +43,26 @@ INSTALL=/opt/petsc
 #~ ##################
 #~ # PETSc upstream #
 #~ ##################
-#~ REMOTE=upstream
-#~ PETSC_DIR=$BASE/${REMOTE}-petsc
-#~ cd $PETSC_DIR
+REMOTE=upstream
+PETSC_DIR=$BASE/${REMOTE}-petsc
+cd $PETSC_DIR
 
-#~ # Cleanup
-#~ rm -rf $INSTALL/$REMOTE/vanilla-*
-#~ rm -rf $PETSC_DIR/vanilla-*
+# Cleanup
+rm -rf $INSTALL/$REMOTE/vanilla-*
+rm -rf $PETSC_DIR/vanilla-*
 
-#~ # rebuild
-#~ git fetch --all
-#~ git checkout main
-#~ git pull
-#~ for PETSC_ARCH in vanilla-debug vanilla-opt
-#~ do
-    #~ my_builds/configure.py \
-		#~ --force $PETSC_ARCH \
-		#~ --prefix=$INSTALL/$REMOTE/$PETSC_ARCH
-    #~ make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all
-    #~ make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH install
-#~ done
+# rebuild
+git fetch --all
+git checkout main
+git pull
+for PETSC_ARCH in vanilla-debug vanilla-opt
+do
+    my_builds/configure.py \
+		--force $PETSC_ARCH \
+		--prefix=$INSTALL/$REMOTE/$PETSC_ARCH
+    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all
+    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH install
+done
 
 ##########################
 # PETSc Firedrake branch #
