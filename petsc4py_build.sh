@@ -9,6 +9,10 @@ export PETSC_DIR=/opt/petsc/firedrake
 export PETSC_ARCH=full-opt
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
+rm -rf \
+    $PETSC_DIR/src/binding/petsc4py/dist \
+    $PETSC_DIR/src/binding/petsc4py/build
+
 for PYENV in py38 py39 py310 py311
 do
     . $PYENV/bin/activate

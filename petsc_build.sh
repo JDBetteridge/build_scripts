@@ -16,7 +16,7 @@
 # cd firedrake-petsc
 # git fetch --all
 # cd ..
-# 
+#
 # mkdir -p upstream-petsc/my_builds firedrake-petsc/my_builds
 # cp build_scripts/petsc_configure.py upstream-petsc/my_builds/configure.py
 # cp build_scripts/petsc_configure.py firedrake-petsc/my_builds/configure.py
@@ -40,9 +40,9 @@
 BASE=/home/jack/build
 INSTALL=/opt/petsc
 
-#~ ##################
-#~ # PETSc upstream #
-#~ ##################
+##################
+# PETSc upstream #
+##################
 REMOTE=upstream
 PETSC_DIR=$BASE/${REMOTE}-petsc
 cd $PETSC_DIR
@@ -73,7 +73,7 @@ cd $PETSC_DIR
 
 # Cleanup
 rm -rf $INSTALL/$REMOTE/minimal-* $INSTALL/$REMOTE/full-* $INSTALL/$REMOTE/complex-*
-rm -rf $PETSC_DIR/minimal-* $PETSC_DIR/full-* $PETSC_DIR/complex-* 
+rm -rf $PETSC_DIR/minimal-* $PETSC_DIR/full-* $PETSC_DIR/complex-*
 
 # --show-petsc-configure-options --minimal-petsc {0} --complex --petsc-int-type=int64
 export EIGEN_TGZ=$BASE/eigen-3.3.3.tgz
