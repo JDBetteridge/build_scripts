@@ -11,6 +11,7 @@ curl -O https://raw.githubusercontent.com/firedrakeproject/firedrake/master/scri
 export MPICH_DIR=/opt/mpich/bin
 export PETSC_DIR=/opt/petsc/firedrake
 export PETSC_ARCH=full-opt
+export HDF5_DIR=$PETSC_DIR/packages
 
 /opt/python/v3.11.2/bin/python3 firedrake-install \
 	--no-package-manager \
