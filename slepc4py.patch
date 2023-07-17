@@ -1,0 +1,13 @@
+diff --git a/src/binding/slepc4py/src/slepc4py/SLEPc/SLEPc.pyx b/src/binding/slepc4py/src/slepc4py/SLEPc/SLEPc.pyx
+index f36b93b9b..84c5fb6ef 100644
+--- a/src/binding/slepc4py/src/slepc4py/SLEPc/SLEPc.pyx
++++ b/src/binding/slepc4py/src/slepc4py/SLEPc/SLEPc.pyx
+@@ -246,7 +246,7 @@ cdef PetscErrorCode register(char path[]) except PETSC_ERR_PYTHON:
+     PyPetscType_Register(SLEPC_MFN_CLASSID, MFN)
+     return PETSC_SUCCESS
+ 
+-cdef void finalize() nogil:
++cdef void finalize() noexcept nogil:
+     cdef PetscErrorCode ierr = PETSC_SUCCESS
+     # manage SLEPc finalization
+     if not (<int>SlepcInitializeCalled): return
