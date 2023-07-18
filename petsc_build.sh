@@ -1,11 +1,8 @@
 #!/bin/bash
 # INSTALL_DIR=/opt/petsc
-# See ./mybuilds/configure.py for detailed options
+# See ./mybuilds/petsc_configure.py for detailed options
 # Initially need to:
-# curl -OL https://github.com/eigenteam/eigen-git-mirror/archive/3.3.3.tar.gz
-# mv 3.3.3.tar.gz eigen-3.3.3.tgz
-#
-# # git clone git@gitlab.com:petsc/petsc.git
+# # git clone git@gitlab.com:petsc/petsc.git upstream-petsc
 # # or
 # git clone https://gitlab.com/petsc/petsc.git upstream-petsc
 # cd upstream-petsc
@@ -31,6 +28,8 @@
 ## /home/jack/build/upstream-petsc   /share/upstream-petsc   none  bind 0 0
 ## /home/jack/build/firedrake-petsc  /share/firedrake-petsc  none  bind 0 0
 ## sudo systemctl daemon-reload
+## sudo mount upstream-petsc
+## sudo mount firedrake-petsc
 ## ln -s /share/upstream-petsc/src /opt/petsc/upstream/src
 ## ln -s /share/upstream-petsc/include /opt/petsc/upstream/include
 ## ln -s /share/firedrake-petsc/src /opt/petsc/firedrake/src
@@ -58,8 +57,8 @@ git pull
 for PETSC_ARCH in vanilla-debug vanilla-opt
 do
     my_builds/configure.py \
-		--force $PETSC_ARCH \
-		--prefix=$INSTALL/$REMOTE/$PETSC_ARCH
+        --force $PETSC_ARCH \
+        --prefix=$INSTALL/$REMOTE/$PETSC_ARCH
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH install
 done
@@ -76,7 +75,6 @@ rm -rf $INSTALL/$REMOTE/minimal-* $INSTALL/$REMOTE/full-* $INSTALL/$REMOTE/compl
 rm -rf $PETSC_DIR/minimal-* $PETSC_DIR/full-* $PETSC_DIR/complex-*
 
 # --show-petsc-configure-options --minimal-petsc {0} --complex --petsc-int-type=int64
-export EIGEN_TGZ=$BASE/eigen-3.3.3.tgz
 git checkout firedrake
 git pull
 for BUILD in debug opt
@@ -84,9 +82,8 @@ do
     for PETSC_ARCH in minimal full complex # int64
     do
         my_builds/configure.py \
-			--force $PETSC_ARCH-$BUILD \
-			--download-eigen=$EIGEN_TGZ \
-			--prefix=$INSTALL/$REMOTE/$PETSC_ARCH-$BUILD
+            --force $PETSC_ARCH-$BUILD \
+            --prefix=$INSTALL/$REMOTE/$PETSC_ARCH-$BUILD
         make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH-$BUILD all-local
         make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH-$BUILD install
     done

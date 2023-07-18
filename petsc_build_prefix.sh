@@ -1,11 +1,8 @@
 #!/bin/bash
 # INSTALL_DIR=/opt/petsc
-# See ./mybuilds/configure.py for detailed options
+# See ./mybuilds/petsc_configure_prefix.py for detailed options
 # Initially need to:
-# curl -OL https://github.com/eigenteam/eigen-git-mirror/archive/3.3.3.tar.gz
-# mv 3.3.3.tar.gz eigen-3.3.3.tgz
-#
-# # git clone git@gitlab.com:petsc/petsc.git
+# # git clone git@gitlab.com:petsc/petsc.git upstream-petsc
 # # or
 # git clone https://gitlab.com/petsc/petsc.git upstream-petsc
 # cd upstream-petsc
@@ -25,12 +22,14 @@
 # mkdir /opt/petsc/upstream
 # mkdir /opt/petsc/firedrake
 
-## mkdir -p /share/upstream-petsc /share/firedrake-petsc
+## sudo mkdir -p /share/upstream-petsc /share/firedrake-petsc
 ## /etc/fstab:
 ## # PETSc source
 ## /home/jack/build/upstream-petsc   /share/upstream-petsc   none  bind 0 0
 ## /home/jack/build/firedrake-petsc  /share/firedrake-petsc  none  bind 0 0
 ## sudo systemctl daemon-reload
+## sudo mount upstream-petsc
+## sudo mount firedrake-petsc
 ## ln -s /share/upstream-petsc/src /opt/petsc/upstream/src
 ## ln -s /share/upstream-petsc/include /opt/petsc/upstream/include
 ## ln -s /share/firedrake-petsc/src /opt/petsc/firedrake/src
@@ -58,8 +57,8 @@ git pull
 for PETSC_ARCH in vanilla-debug vanilla-opt
 do
     my_builds/configure_prefix.py \
-		--force $PETSC_ARCH \
-		--prefix=$INSTALL/$REMOTE/$PETSC_ARCH
+        --force $PETSC_ARCH \
+        --prefix=$INSTALL/$REMOTE/$PETSC_ARCH
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH install
 done
@@ -84,7 +83,6 @@ rm -rf \
     $PETSC_DIR/complex-*
 
 # --show-petsc-configure-options --minimal-petsc {0} --complex --petsc-int-type=int64
-export EIGEN_TGZ=$BASE/eigen-3.3.3.tgz
 git checkout firedrake
 git pull
 
@@ -92,7 +90,6 @@ git pull
 PETSC_ARCH=packages
 my_builds/configure_prefix.py \
     --force $PETSC_ARCH \
-    --download-eigen=$EIGEN_TGZ \
     --prefix=$INSTALL/$REMOTE/$PETSC_ARCH
 make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all-local
 make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH install
@@ -103,11 +100,11 @@ mv $INSTALL/$REMOTE/$PETSC_ARCH/include/petscconf.h $PETSC_ARCH/include/old_pets
 # Build all the different PETSc configurations
 for BUILD in debug opt
 do
-    for PETSC_ARCH in minimal full complex # int64
+    for PETSC_ARCH in full complex # minimal int64
     do
         my_builds/configure_prefix.py \
-			--force $PETSC_ARCH-$BUILD \
-			--prefix=$INSTALL/$REMOTE/$PETSC_ARCH-$BUILD \
+            --force $PETSC_ARCH-$BUILD \
+            --prefix=$INSTALL/$REMOTE/$PETSC_ARCH-$BUILD \
             --package-dir=$INSTALL/$REMOTE/packages
         make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH-$BUILD all-local
         make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH-$BUILD install

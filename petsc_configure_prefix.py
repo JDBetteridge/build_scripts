@@ -63,7 +63,6 @@ print(f'{package_dir =}')
 # Firedrake
 minimal = [
     f'--with-chaco-dir={package_dir}',
-    f'--with-eigen-dir={package_dir}',
     f'--with-hdf5-dir={package_dir}',
     f'--with-mumps-dir={package_dir}',
     f'--with-ptscotch-dir={package_dir}',
