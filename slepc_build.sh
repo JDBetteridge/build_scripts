@@ -44,7 +44,7 @@ cd $SLEPC_DIR
 
 # Cleanup
 rm -rf $INSTALL/$REMOTE/vanilla-*
-rm -rf $SLEPC_DIR/arch-*
+rm -rf $SLEPC_DIR/installed-arch-*
 
 # rebuild
 git fetch --all
@@ -71,7 +71,7 @@ cd $SLEPC_DIR
 
 # Cleanup
 rm -rf $INSTALL/$REMOTE/minimal-* $INSTALL/$REMOTE/full-* $INSTALL/$REMOTE/complex-*
-rm -rf $SLEPC_DIR/arch-*
+rm -rf $SLEPC_DIR/installed-arch-*
 
 git checkout firedrake
 git pull
