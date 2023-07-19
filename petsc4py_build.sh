@@ -5,13 +5,12 @@
 #     $PYTHON -m venv py3$($PYTHON -c "import sys; print(sys.version_info.minor)")
 # done
 
-export PETSC_DIR=/opt/petsc/firedrake
-export PETSC_ARCH=full-opt
+export PETSC_DIR=/opt/petsc/firedrake/full-opt
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
 rm -rf \
-    $PETSC_DIR/src/binding/petsc4py/dist \
-    $PETSC_DIR/src/binding/petsc4py/build
+    $PETSC_DIR/../src/binding/petsc4py/dist \
+    $PETSC_DIR/../src/binding/petsc4py/build
 
 for PYENV in py38 py39 py310 py311
 do
@@ -23,17 +22,16 @@ do
     $VIRTUAL_ENV/bin/pip install -U pip
     $VIRTUAL_ENV/bin/pip install -U setuptools
     $VIRTUAL_ENV/bin/pip install -U wheel
-    $VIRTUAL_ENV/bin/pip install -U cython
+    $VIRTUAL_ENV/bin/pip install -U cython==0.29.36
     $VIRTUAL_ENV/bin/pip install -U numpy
-    cd $PETSC_DIR/src/binding/petsc4py
+    cd $PETSC_DIR/../src/binding/petsc4py
     $VIRTUAL_ENV/bin/python setup.py bdist_wheel
     deactivate
     cd /home/jack/build
 done
 
 # debug
-export PETSC_DIR=/opt/petsc/firedrake
-export PETSC_ARCH=full-debug
+export PETSC_DIR=/opt/petsc/firedrake/full-debug
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
 for PYENV in py38 py39 py310 py311
@@ -46,9 +44,9 @@ do
     $VIRTUAL_ENV/bin/pip install -U pip
     $VIRTUAL_ENV/bin/pip install -U setuptools
     $VIRTUAL_ENV/bin/pip install -U wheel
-    $VIRTUAL_ENV/bin/pip install -U cython
+    $VIRTUAL_ENV/bin/pip install -U cython==0.29.36
     $VIRTUAL_ENV/bin/pip install -U numpy
-    cd $PETSC_DIR/src/binding/petsc4py
+    cd $PETSC_DIR/../src/binding/petsc4py
     mkdir -p dist/debug
     $VIRTUAL_ENV/bin/python setup.py bdist_wheel -d dist/debug
     deactivate
@@ -56,8 +54,7 @@ do
 done
 
 # Complex
-export PETSC_DIR=/opt/petsc/firedrake
-export PETSC_ARCH=complex-opt
+export PETSC_DIR=/opt/petsc/firedrake/complex-opt
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
 for PYENV in py38 py39 py310 py311
@@ -70,9 +67,9 @@ do
     $VIRTUAL_ENV/bin/pip install -U pip
     $VIRTUAL_ENV/bin/pip install -U setuptools
     $VIRTUAL_ENV/bin/pip install -U wheel
-    $VIRTUAL_ENV/bin/pip install -U cython
+    $VIRTUAL_ENV/bin/pip install -U cython==0.29.36
     $VIRTUAL_ENV/bin/pip install -U numpy
-    cd $PETSC_DIR/src/binding/petsc4py
+    cd $PETSC_DIR/../src/binding/petsc4py
     mkdir -p dist/complex
     $VIRTUAL_ENV/bin/python setup.py bdist_wheel -d dist/complex
     deactivate

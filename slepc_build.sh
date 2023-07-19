@@ -38,49 +38,53 @@ INSTALL=/opt/slepc
 # SLEPc upstream #
 ##################
 REMOTE=upstream
-PETSC_DIR=$BASE/${REMOTE}-petsc
+PETSC_BASE_DIR=/opt/petsc/${REMOTE}
 SLEPC_DIR=$BASE/${REMOTE}-slepc
 cd $SLEPC_DIR
 
 # Cleanup
 rm -rf $INSTALL/$REMOTE/vanilla-*
-rm -rf $SLEPC_DIR/vanilla-*
+rm -rf $SLEPC_DIR/arch-*
 
 # rebuild
 git fetch --all
 git checkout main
 git pull
-for PETSC_ARCH in vanilla-debug vanilla-opt
+# Don't use PETSC_ARCH for prefix builds (https://slepc.upv.es/documentation/slepc.pdf)
+for _ARCH in vanilla-debug vanilla-opt
 do
-    env PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH \
+    env PETSC_DIR=$PETSC_BASE_DIR/$_ARCH \
         ./configure \
-            --prefix=$INSTALL/$REMOTE/$PETSC_ARCH
-    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all
-    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH install
+            --prefix=$INSTALL/$REMOTE/$_ARCH
+    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_BASE_DIR/$_ARCH all
+    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_BASE_DIR/$_ARCH install
+    ln -s /share/${REMOTE}-slepc/src $INSTALL/$REMOTE/$_ARCH-$BUILD/src
 done
 
 ##########################
 # SLEPc Firedrake branch #
 ##########################
 REMOTE=firedrake
-PETSC_DIR=$BASE/${REMOTE}-petsc
+PETSC_BASE_DIR=/opt/petsc/${REMOTE}
 SLEPC_DIR=$BASE/${REMOTE}-slepc
 cd $SLEPC_DIR
 
 # Cleanup
 rm -rf $INSTALL/$REMOTE/minimal-* $INSTALL/$REMOTE/full-* $INSTALL/$REMOTE/complex-*
-rm -rf $SLEPC_DIR/minimal-* $SLEPC_DIR/full-* $SLEPC_DIR/complex-*
+rm -rf $SLEPC_DIR/arch-*
 
 git checkout firedrake
 git pull
 for BUILD in debug opt
 do
-    for PETSC_ARCH in minimal full complex # int64
+    # Don't use PETSC_ARCH for prefix builds (https://slepc.upv.es/documentation/slepc.pdf)
+    for _ARCH in full complex # minimal int64
     do
-        env PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH-$BUILD \
+        env PETSC_DIR=$PETSC_BASE_DIR/$_ARCH-$BUILD \
             ./configure \
-                --prefix=$INSTALL/$REMOTE/$PETSC_ARCH-$BUILD
-        make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH-$BUILD all-local
-        make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH-$BUILD install
+                --prefix=$INSTALL/$REMOTE/$_ARCH-$BUILD
+        make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_BASE_DIR/$_ARCH-$BUILD all-local
+        make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_BASE_DIR/$_ARCH-$BUILD install
+        ln -s /share/${REMOTE}-slepc/src $INSTALL/$REMOTE/$_ARCH-$BUILD/src
     done
 done

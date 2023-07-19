@@ -17,7 +17,6 @@ base_options = [
     '--with-cxx-dialext=C++11',
     '--with-fortran-bindings=0',
     '--with-mpi-dir=/opt/mpich',
-    f'PETSC_ARCH={args.name}',
   ]
 
 debug = ['--with-debugging=1']
@@ -75,6 +74,6 @@ if __name__ == '__main__':
   sys.path.insert(0, os.path.abspath('config'))
   import configure
 
-  print('Congiguring install for', base_options[0])
+  print('Configuring install for', base_options[0])
   configure_options = base_options + custom_conf[args.name]
   configure.petsc_configure(configure_options)

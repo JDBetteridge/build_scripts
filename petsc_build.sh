@@ -43,48 +43,48 @@ INSTALL=/opt/petsc
 # PETSc upstream #
 ##################
 REMOTE=upstream
-PETSC_DIR=$BASE/${REMOTE}-petsc
-cd $PETSC_DIR
+PETSC_BASE_DIR=$BASE/${REMOTE}-petsc
+cd $PETSC_BASE_DIR
 
 # Cleanup
 rm -rf $INSTALL/$REMOTE/vanilla-*
-rm -rf $PETSC_DIR/vanilla-*
+rm -rf $PETSC_BASE_DIR/arch-*
 
 # rebuild
 git fetch --all
 git checkout main
 git pull
-for PETSC_ARCH in vanilla-debug vanilla-opt
+# Don't use PETSC_ARCH for prefix builds (https://slepc.upv.es/documentation/slepc.pdf)
+for _ARCH in vanilla-debug vanilla-opt
 do
     my_builds/configure.py \
-        --force $PETSC_ARCH \
-        --prefix=$INSTALL/$REMOTE/$PETSC_ARCH
-    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all
-    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH install
+        --prefix=$INSTALL/$REMOTE/$_ARCH $_ARCH
+    make PETSC_DIR=$PETSC_BASE_DIR/$_ARCH all
+    make PETSC_DIR=$PETSC_BASE_DIR/$_ARCH install
 done
 
 ##########################
 # PETSc Firedrake branch #
 ##########################
 REMOTE=firedrake
-PETSC_DIR=$BASE/${REMOTE}-petsc
-cd $PETSC_DIR
+PETSC_BASE_DIR=$BASE/${REMOTE}-petsc
+cd $PETSC_BASE_DIR
 
 # Cleanup
 rm -rf $INSTALL/$REMOTE/minimal-* $INSTALL/$REMOTE/full-* $INSTALL/$REMOTE/complex-*
-rm -rf $PETSC_DIR/minimal-* $PETSC_DIR/full-* $PETSC_DIR/complex-*
+rm -rf $PETSC_BASE_DIR/arch-*
 
 # --show-petsc-configure-options --minimal-petsc {0} --complex --petsc-int-type=int64
 git checkout firedrake
 git pull
 for BUILD in debug opt
 do
-    for PETSC_ARCH in minimal full complex # int64
+    # Don't use PETSC_ARCH for prefix builds (https://slepc.upv.es/documentation/slepc.pdf)
+    for _ARCH in full complex # minimal int64
     do
         my_builds/configure.py \
-            --force $PETSC_ARCH-$BUILD \
-            --prefix=$INSTALL/$REMOTE/$PETSC_ARCH-$BUILD
-        make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH-$BUILD all-local
-        make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH-$BUILD install
+            --prefix=$INSTALL/$REMOTE/$_ARCH-$BUILD $_ARCH
+        make PETSC_BASE_DIR=$PETSC_DIR/$_ARCH-$BUILD all-local
+        make PETSC_BASE_DIR=$PETSC_DIR/$_ARCH-$BUILD install
     done
 done
