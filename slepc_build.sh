@@ -80,6 +80,11 @@ do
     # Don't use PETSC_ARCH for prefix builds (https://slepc.upv.es/documentation/slepc.pdf)
     for _ARCH in full complex # minimal int64
     do
+        # Hopefully this nasty hack will go away when the PETSc branch is moved forwards
+        mv -n $PETSC_BASE_DIR/$_ARCH-$BUILD/share/petsc/examples/config/gmakegen.py \
+            $PETSC_BASE_DIR/$_ARCH-$BUILD/share/petsc/examples/config/gmakegen.py.backup
+        cp /opt/petsc/upstream/vanilla-opt/share/petsc/examples/config/gmakegen.py \
+            $PETSC_BASE_DIR/$_ARCH-$BUILD/share/petsc/examples/config/gmakegen.py
         env PETSC_DIR=$PETSC_BASE_DIR/$_ARCH-$BUILD \
             ./configure \
                 --prefix=$INSTALL/$REMOTE/$_ARCH-$BUILD
