@@ -43,32 +43,32 @@ INSTALL=/opt/petsc
 # PETSc upstream #
 ##################
 REMOTE=upstream
-PETSC_DIR=$BASE/${REMOTE}-petsc
-cd $PETSC_DIR
+PETSC_BASE_DIR=$BASE/${REMOTE}-petsc
+cd $PETSC_BASE_DIR
 
 # Cleanup
 rm -rf $INSTALL/$REMOTE/vanilla-*
-rm -rf $PETSC_DIR/vanilla-*
+rm -rf $PETSC_BASE_DIR/arch-*
 
 # rebuild
 git fetch --all
 git checkout main
 git pull
-for PETSC_ARCH in vanilla-debug vanilla-opt
+# Don't use PETSC_ARCH for prefix builds (https://slepc.upv.es/documentation/slepc.pdf)
+for _ARCH in vanilla-debug vanilla-opt
 do
     my_builds/configure_prefix.py \
-        --force $PETSC_ARCH \
-        --prefix=$INSTALL/$REMOTE/$PETSC_ARCH
-    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all
-    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH install
+        --prefix=$INSTALL/$REMOTE/$_ARCH $_ARCH
+    make all
+    make install
 done
 
 ##########################
 # PETSc Firedrake branch #
 ##########################
 REMOTE=firedrake
-PETSC_DIR=$BASE/${REMOTE}-petsc
-cd $PETSC_DIR
+PETSC_BASE_DIR=$BASE/${REMOTE}-petsc
+cd $PETSC_BASE_DIR
 
 # Cleanup
 rm -rf \
@@ -77,36 +77,33 @@ rm -rf \
     $INSTALL/$REMOTE/full-* \
     $INSTALL/$REMOTE/complex-*
 rm -rf \
-    $PETSC_DIR/packages \
-    $PETSC_DIR/minimal-* \
-    $PETSC_DIR/full-* \
-    $PETSC_DIR/complex-*
+    $PETSC_BASE_DIR/arch-*
 
 # --show-petsc-configure-options --minimal-petsc {0} --complex --petsc-int-type=int64
 git checkout firedrake
 git pull
 
 # Build all external packages first
-PETSC_ARCH=packages
+_ARCH=packages
 my_builds/configure_prefix.py \
-    --force $PETSC_ARCH \
-    --prefix=$INSTALL/$REMOTE/$PETSC_ARCH
-make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all-local
-make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH install
+    --prefix=$INSTALL/$REMOTE/$_ARCH $_ARCH
+make all-local
+make install
 # Criple the install configuration so it isn't mistaken for another PETSc
-mv $PETSC_ARCH/include/petscconf.h $PETSC_ARCH/include/old_petscconf.nope
-mv $INSTALL/$REMOTE/$PETSC_ARCH/include/petscconf.h $PETSC_ARCH/include/old_petscconf.nope
+mv $_ARCH/include/petscconf.h $_ARCH/include/old_petscconf.nope
+mv $INSTALL/$REMOTE/$_ARCH/include/petscconf.h $_ARCH/include/old_petscconf.nope
 
 # Build all the different PETSc configurations
 for BUILD in debug opt
 do
-    for PETSC_ARCH in full complex # minimal int64
+    # Don't use PETSC_ARCH for prefix builds (https://slepc.upv.es/documentation/slepc.pdf)
+    for _ARCH in full complex # minimal int64
     do
         my_builds/configure_prefix.py \
-            --force $PETSC_ARCH-$BUILD \
-            --prefix=$INSTALL/$REMOTE/$PETSC_ARCH-$BUILD \
-            --package-dir=$INSTALL/$REMOTE/packages
-        make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH-$BUILD all-local
-        make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH-$BUILD install
+            --prefix=$INSTALL/$REMOTE/$_ARCH-$BUILD \
+            --package-dir=$INSTALL/$REMOTE/packages \
+            ${_ARCH}-${BUILD}
+        make all-local
+        make install
     done
 done
