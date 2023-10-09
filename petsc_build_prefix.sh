@@ -30,10 +30,6 @@
 ## sudo systemctl daemon-reload
 ## sudo mount upstream-petsc
 ## sudo mount firedrake-petsc
-## ln -s /share/upstream-petsc/src /opt/petsc/upstream/src
-## ln -s /share/upstream-petsc/include /opt/petsc/upstream/include
-## ln -s /share/firedrake-petsc/src /opt/petsc/firedrake/src
-## ln -s /share/firedrake-petsc/include /opt/petsc/firedrake/include
 
 
 BASE=/home/jack/build
@@ -61,6 +57,7 @@ do
         --prefix=$INSTALL/$REMOTE/$_ARCH $_ARCH
     make all
     make install
+    ln -s $PETSC_BASE_DIR/src $INSTALL/$REMOTE/$_ARCH/
 done
 
 ##########################
@@ -105,5 +102,6 @@ do
             ${_ARCH}-${BUILD}
         make all-local
         make install
+        ln -s $PETSC_BASE_DIR/src $INSTALL/$REMOTE/$_ARCH-$BUILD/
     done
 done
