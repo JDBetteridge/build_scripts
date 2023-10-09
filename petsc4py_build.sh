@@ -5,6 +5,8 @@
 #     $PYTHON -m venv py3$($PYTHON -c "import sys; print(sys.version_info.minor)")
 # done
 
+ALL_ENVS="py38 py39 py310 py311"
+
 export PETSC_DIR=/opt/petsc/firedrake/full-opt
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
@@ -12,7 +14,7 @@ rm -rf \
     $PETSC_DIR/../src/binding/petsc4py/dist \
     $PETSC_DIR/../src/binding/petsc4py/build
 
-for PYENV in py38 py39 py310 py311
+for PYENV in $ALL_ENVS
 do
     . $PYENV/bin/activate
     echo ================
@@ -34,7 +36,7 @@ done
 export PETSC_DIR=/opt/petsc/firedrake/full-debug
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
-for PYENV in py38 py39 py310 py311
+for PYENV in $ALL_ENVS
 do
     . $PYENV/bin/activate
     echo ================
@@ -57,7 +59,7 @@ done
 export PETSC_DIR=/opt/petsc/firedrake/complex-opt
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
-for PYENV in py38 py39 py310 py311
+for PYENV in $ALL_ENVS
 do
     . $PYENV/bin/activate
     echo ================
