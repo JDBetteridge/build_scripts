@@ -11,8 +11,8 @@ export PETSC_DIR=/opt/petsc/firedrake/full-opt
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
 rm -rf \
-    $PETSC_DIR/../src/binding/petsc4py/dist \
-    $PETSC_DIR/../src/binding/petsc4py/build
+    $PETSC_DIR/src/binding/petsc4py/dist \
+    $PETSC_DIR/src/binding/petsc4py/build
 
 for PYENV in $ALL_ENVS
 do
@@ -26,7 +26,7 @@ do
     $VIRTUAL_ENV/bin/pip install -U wheel
     $VIRTUAL_ENV/bin/pip install -U cython==0.29.36
     $VIRTUAL_ENV/bin/pip install -U numpy
-    cd $PETSC_DIR/../src/binding/petsc4py
+    cd $PETSC_DIR/src/binding/petsc4py
     $VIRTUAL_ENV/bin/python setup.py bdist_wheel
     deactivate
     cd /home/jack/build
@@ -48,7 +48,7 @@ do
     $VIRTUAL_ENV/bin/pip install -U wheel
     $VIRTUAL_ENV/bin/pip install -U cython==0.29.36
     $VIRTUAL_ENV/bin/pip install -U numpy
-    cd $PETSC_DIR/../src/binding/petsc4py
+    cd $PETSC_DIR/src/binding/petsc4py
     mkdir -p dist/debug
     $VIRTUAL_ENV/bin/python setup.py bdist_wheel -d dist/debug
     deactivate
@@ -71,7 +71,7 @@ do
     $VIRTUAL_ENV/bin/pip install -U wheel
     $VIRTUAL_ENV/bin/pip install -U cython==0.29.36
     $VIRTUAL_ENV/bin/pip install -U numpy
-    cd $PETSC_DIR/../src/binding/petsc4py
+    cd $PETSC_DIR/src/binding/petsc4py
     mkdir -p dist/complex
     $VIRTUAL_ENV/bin/python setup.py bdist_wheel -d dist/complex
     deactivate

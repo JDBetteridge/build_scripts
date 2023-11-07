@@ -8,6 +8,8 @@
 # slepc4py source needs patching with
 # `git apply slepc4py.patch` in SLEPc source directory
 
+ALL_ENVS="py38 py39 py310 py311"
+
 export PETSC_DIR=/opt/petsc/firedrake/full-opt
 export SLEPC_DIR=/opt/slepc/firedrake/full-opt
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
@@ -16,7 +18,7 @@ rm -rf \
     $SLEPC_DIR/src/binding/slepc4py/dist \
     $SLEPC_DIR/src/binding/slepc4py/build
 
-for PYENV in py38 py39 py310 py311
+for PYENV in $ALL_ENVS
 do
     . $PYENV/bin/activate
     echo ================
@@ -30,7 +32,7 @@ do
     $VIRTUAL_ENV/bin/pip install -U numpy
     VERSION_STRING=$(python -c "import sys; v=sys.version_info; print(f'cp{v.major}{v.minor}')")
     $VIRTUAL_ENV/bin/pip install \
-        $PETSC_DIR/../src/binding/petsc4py/dist/petsc4py-*${VERSION_STRING}-${VERSION_STRING}*.whl
+        $(ls $PETSC_DIR/src/binding/petsc4py/dist/petsc4py-*${VERSION_STRING}-${VERSION_STRING}*.whl)
     cd $SLEPC_DIR/src/binding/slepc4py
     $VIRTUAL_ENV/bin/python setup.py bdist_wheel
     $VIRTUAL_ENV/bin/pip uninstall -y petsc4py
@@ -43,7 +45,7 @@ export PETSC_DIR=/opt/petsc/firedrake/full-debug
 export SLEPC_DIR=/opt/slepc/firedrake/full-debug
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
-for PYENV in py38 py39 py310 py311
+for PYENV in $ALL_ENVS
 do
     . $PYENV/bin/activate
     echo ================
@@ -57,7 +59,7 @@ do
     $VIRTUAL_ENV/bin/pip install -U numpy
     VERSION_STRING=$(python -c "import sys; v=sys.version_info; print(f'cp{v.major}{v.minor}')")
     $VIRTUAL_ENV/bin/pip install \
-        $PETSC_DIR/../src/binding/petsc4py/dist/debug/petsc4py-*${VERSION_STRING}-${VERSION_STRING}*.whl
+        $(ls $PETSC_DIR/src/binding/petsc4py/dist/debug/petsc4py-*${VERSION_STRING}-${VERSION_STRING}*.whl)
     cd $SLEPC_DIR/src/binding/slepc4py
     mkdir -p dist/debug
     $VIRTUAL_ENV/bin/python setup.py bdist_wheel -d dist/debug
@@ -71,7 +73,7 @@ export PETSC_DIR=/opt/petsc/firedrake/complex-opt
 export SLEPC_DIR=/opt/slepc/firedrake/complex-opt
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
 
-for PYENV in py38 py39 py310 py311
+for PYENV in $ALL_ENVS
 do
     . $PYENV/bin/activate
     echo ================
@@ -85,7 +87,7 @@ do
     $VIRTUAL_ENV/bin/pip install -U numpy
     VERSION_STRING=$(python -c "import sys; v=sys.version_info; print(f'cp{v.major}{v.minor}')")
     $VIRTUAL_ENV/bin/pip install \
-        $PETSC_DIR/../src/binding/petsc4py/dist/complex/petsc4py-*${VERSION_STRING}-${VERSION_STRING}*.whl
+        $(ls $PETSC_DIR/src/binding/petsc4py/dist/complex/petsc4py-*${VERSION_STRING}-${VERSION_STRING}*.whl)
     cd $SLEPC_DIR/src/binding/slepc4py
     mkdir -p dist/debug
     $VIRTUAL_ENV/bin/python setup.py bdist_wheel -d dist/complex
