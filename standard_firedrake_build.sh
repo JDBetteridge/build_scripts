@@ -9,7 +9,7 @@ cd /opt/firedrake
 curl -O https://raw.githubusercontent.com/firedrakeproject/firedrake/master/scripts/firedrake-install
 
 export MPICH_DIR=/opt/mpich/bin
-export HDF5_DIR=$PETSC_DIR/packages
+export HDF5_DIR=/opt/petsc/firedrake/packages
 export PETSC_DIR=/opt/petsc/firedrake/full-opt
 export SLEPC_DIR=/opt/slepc/firedrake/full-opt
 
