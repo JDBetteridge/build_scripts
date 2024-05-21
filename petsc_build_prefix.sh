@@ -57,7 +57,7 @@ do
         --prefix=$INSTALL/$REMOTE/$_ARCH $_ARCH
     make all
     make install
-    ln -s $PETSC_BASE_DIR/src $INSTALL/$REMOTE/$_ARCH/
+    ln -s /share/$REMOTE-petsc/src $INSTALL/$REMOTE/$_ARCH/
 done
 
 ##########################
@@ -102,6 +102,6 @@ do
             ${_ARCH}-${BUILD}
         make all-local
         make install
-        ln -s $PETSC_BASE_DIR/src $INSTALL/$REMOTE/$_ARCH-$BUILD/
+        ln -s /share/$REMOTE-petsc/src $INSTALL/$REMOTE/$_ARCH-$BUILD/
     done
 done
