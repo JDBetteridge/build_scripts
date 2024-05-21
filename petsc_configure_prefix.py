@@ -3,6 +3,7 @@ import sys
 import os
 
 from argparse import ArgumentParser
+from pprint import pprint
 
 parser = ArgumentParser('Custom wrapper from PETSc configure')
 parser.add_argument(
@@ -27,7 +28,7 @@ base_options = [
     '--with-fortran-bindings=0',
     '--with-mpi-dir=/opt/mpich',
     '--with-zlib',
-  ]
+]
 
 debug = ['--with-debugging=1']
 opt = [
@@ -57,7 +58,6 @@ packages = [
 ]
 
 package_dir = args.package_dir
-print(f'{package_dir =}')
 
 # Firedrake
 minimal = [
@@ -84,20 +84,46 @@ firedrake_not_complex = minimal_not_complex + [f'--with-ml-dir={package_dir}']
 
 firedrake_complex = ['--with-scalar-type=complex']
 
+# Cuda build of PETSc
+cuda_base_options = [
+    '--with-bison',
+    '--with-c2html=0',
+    '--with-cuda-dir=/opt/cuda',
+    '--with-cudac=/opt/cuda/bin/nvcc',
+    '--with-cxx-dialext=C++11',
+    '--with-flex',
+    '--with-fortran-bindings=0',
+    '--with-mpi-dir=/opt/mpich-cuda',
+    '--with-zlib',
+]
+
+cuda_packages = [
+    '--download-chaco',
+    '--download-hdf5',
+    '--download-hwloc',
+    '--download-hypre',
+    '--download-mumps',
+    '--download-ptscotch',
+    '--download-scalapack',
+    '--download-superlu_dist',
+]
+
 custom_conf = {
-    'vanilla-debug': debug,
-    'vanilla-opt': opt,
+    'vanilla-debug': base_options + debug,
+    'vanilla-opt': base_options + opt,
     'packages': base_options + opt + packages,
-    'minimal-debug': debug + minimal + minimal_not_complex,
-    'minimal-opt': opt + minimal + minimal_not_complex,
-    'full-debug': debug + firedrake + firedrake_not_complex,
-    'full-opt': opt + firedrake + firedrake_not_complex,
-    'complex-minimal-debug': debug + minimal + firedrake_complex,
-    'complex-minimal-opt': opt + minimal + firedrake_complex,
-    'complex-debug': debug + firedrake + firedrake_complex,
-    'complex-opt': opt + firedrake + firedrake_complex,
-    'custom': unknown,
-    'test': unknown
+    'minimal-debug': base_options + debug + minimal + minimal_not_complex,
+    'minimal-opt': base_options + opt + minimal + minimal_not_complex,
+    'full-debug': base_options + debug + firedrake + firedrake_not_complex,
+    'full-opt': base_options + opt + firedrake + firedrake_not_complex,
+    'complex-minimal-debug': base_options + debug + minimal + firedrake_complex,
+    'complex-minimal-opt': base_options + opt + minimal + firedrake_complex,
+    'complex-debug': base_options + debug + firedrake + firedrake_complex,
+    'complex-opt': base_options + opt + firedrake + firedrake_complex,
+    'cuda-debug': cuda_base_options + debug + cuda_packages,
+    'cuda-opt': cuda_base_options + opt + cuda_packages,
+    'custom': base_options + unknown,
+    'test': base_options + unknown
 }
 
 
@@ -105,6 +131,9 @@ if __name__ == '__main__':
   sys.path.insert(0, os.path.abspath('config'))
   import configure
 
-  print('Configuring install for', base_options[0])
-  configure_options = base_options + custom_conf[args.name]
+  configure_options = custom_conf[args.name]
+  print('Configuring install for', args.name)
+  print('which uses the following configuration flags:')
+  print('\t' + '\n\t'.join(configure_options))
+  print(f'Using the package directory {package_dir =}')
   configure.petsc_configure(configure_options)

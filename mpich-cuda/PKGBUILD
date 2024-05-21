@@ -4,7 +4,7 @@
 
 pkgname=mpich-cuda
 _true_pkgname=mpich
-pkgver=4.1
+pkgver=4.2.0
 pkgrel=1
 pkgdesc="An improved implementation of the Message Passing Interface."
 url="https://mpich.org"
@@ -17,7 +17,7 @@ optdepends=(perl python)
 install="${_true_pkgname}.install"
 source=("https://www.mpich.org/static/downloads/${pkgver}/${_true_pkgname}-${pkgver}.tar.gz"
 	"mpich.profile")
-sha256sums=('8b1ec63bc44c7caa2afbb457bc5b3cd4a70dbe46baba700123d67c48dc5ab6a0'
+sha256sums=('a64a66781b9e5312ad052d32689e23252f745b27ee8818ac2ac0c8209bc0b90e'
             'f9e0a5b9bdac8013dc9780be0d25b28c76aa68e0f4da7f5891c1358ea308e560')
 options=('!libtool')
 
@@ -48,7 +48,7 @@ build() {
                --without-ze \
                --enable-error-checking=runtime \
                --enable-error-messages=all \
-               CC=gcc CXX=g++ FC=gfortran
+               CC=gcc-12 CXX=g++-12 FC=gfortran-12
 
   make -j16
   make mandoc
