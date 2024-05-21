@@ -15,8 +15,6 @@
 # cd ..
 #
 # mkdir -p upstream-petsc/my_builds firedrake-petsc/my_builds
-# cp build_scripts/petsc_configure_prefix.py upstream-petsc/my_builds/configure_prefix.py
-# cp build_scripts/petsc_configure_prefix.py firedrake-petsc/my_builds/configure_prefix.py
 # sudo mkdir -p /opt/petsc
 # sudo chown jack /opt/petsc
 # mkdir /opt/petsc/upstream
@@ -51,6 +49,7 @@ git fetch --all
 git checkout main
 git pull
 # Don't use PETSC_ARCH for prefix builds (https://slepc.upv.es/documentation/slepc.pdf)
+cp $BASE/build_scripts/petsc_configure_prefix.py $PETSC_BASE_DIR/my_builds/configure_prefix.py
 for _ARCH in vanilla-debug vanilla-opt
 do
     my_builds/configure_prefix.py \
@@ -79,8 +78,15 @@ rm -rf \
 # --show-petsc-configure-options --minimal-petsc {0} --complex --petsc-int-type=int64
 git checkout firedrake
 git pull
+# Need to add upstream repo
+# git remote add upstream https://gitlab.com/petsc/petsc.git
+# git fetch --all
+# And cherry pick b82a6ca9 and 04ac5fe8
+# git cherry-pick b82a6ca9
+# git cherry-pick 04ac5fe8
 
 # Build all external packages first
+cp $BASE/build_scripts/petsc_configure_prefix.py $PETSC_BASE_DIR/my_builds/configure_prefix.py
 _ARCH=packages
 my_builds/configure_prefix.py \
     --prefix=$INSTALL/$REMOTE/$_ARCH $_ARCH
