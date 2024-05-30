@@ -49,6 +49,7 @@ git fetch --all
 git checkout main
 git pull
 # Don't use PETSC_ARCH for prefix builds (https://slepc.upv.es/documentation/slepc.pdf)
+mkdir -p $PETSC_BASE_DIR/my_builds
 cp $BASE/build_scripts/petsc_configure_prefix.py $PETSC_BASE_DIR/my_builds/configure_prefix.py
 for _ARCH in vanilla-debug vanilla-opt
 do
