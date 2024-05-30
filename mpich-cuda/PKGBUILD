@@ -41,14 +41,14 @@ build() {
   cd build
 
   ../configure --prefix=/opt/mpich-cuda \
-               --with-device=ch4:ucx \
+               --with-device=ch3:sock \
                --with-hwloc \
                --with-cuda=/opt/cuda \
                --without-java \
                --without-ze \
                --enable-error-checking=runtime \
                --enable-error-messages=all \
-               CC=gcc-12 CXX=g++-12 FC=gfortran-12
+               CC=gcc-13 CXX=g++-13 FC=gfortran-13
 
   make -j16
   make mandoc
