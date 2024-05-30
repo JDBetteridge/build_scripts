@@ -4,7 +4,7 @@ curl -O https://raw.githubusercontent.com/firedrakeproject/firedrake/master/scri
 
 export NVCC_PREPEND_FLAGS='-ccbin /opt/cuda/bin'
 export MPICH_DIR=/opt/mpich-cuda/bin
-export PETSC_DIR=/opt/petsc/firedrake/cuda-opt
+export PETSC_DIR=/opt/petsc/cuda/cuda-opt
 export HDF5_DIR=$PETSC_DIR
 
 /opt/python/v3.11.2/bin/python3 firedrake-install \

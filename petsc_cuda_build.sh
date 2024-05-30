@@ -1,9 +1,17 @@
 #!/bin/bash
+# git clone git@github.com:firedrakeproject/petsc.git cuda-petsc
+# mkdir /opt/petsc/cuda
+# sudo mkdir -p /share/cuda-petsc
+## Append to /etc/fstab:
+## # PETSc source
+## /home/jack/build/cuda-petsc   /share/cuda-petsc   none  bind 0 0
+## sudo systemctl daemon-reload
+## sudo mount cuda-petsc
 
 BASE=/home/jack/build
 INSTALL=/opt/petsc
 
-REMOTE=firedrake
+REMOTE=cuda
 PETSC_BASE_DIR=$BASE/${REMOTE}-petsc
 cd $PETSC_BASE_DIR
 
@@ -12,6 +20,10 @@ rm -rf \
 
 git checkout firedrake
 git pull
+
+# Custom configure script
+mkdir -p $PETSC_BASE_DIR/my_builds
+cp $BASE/build_scripts/petsc_configure_prefix.py $PETSC_BASE_DIR/my_builds/configure_prefix.py
 
 # Build all the different PETSc configurations
 _ARCH=cuda

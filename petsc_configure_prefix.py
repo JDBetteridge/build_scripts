@@ -39,14 +39,11 @@ opt = [
 ]
 
 # All pacakges
-# Specify --download-eigen=$EIGEN_TGZ outside
 packages = [
-    '--download-chaco',
     '--download-hdf5',
     '--download-hwloc',
     '--download-hypre',
     '--download-metis',
-    '--download-ml',
     '--download-mumps',
     '--download-netcdf',
     '--download-pastix',
@@ -61,7 +58,6 @@ package_dir = args.package_dir
 
 # Firedrake
 minimal = [
-    f'--with-chaco-dir={package_dir}',
     f'--with-hdf5-dir={package_dir}',
     f'--with-mumps-dir={package_dir}',
     f'--with-ptscotch-dir={package_dir}',
@@ -80,8 +76,6 @@ firedrake = minimal + [
     f'--with-suitesparse-dir={package_dir}',
 ]
 
-firedrake_not_complex = minimal_not_complex + [f'--with-ml-dir={package_dir}']
-
 firedrake_complex = ['--with-scalar-type=complex']
 
 # Cuda build of PETSc
@@ -98,7 +92,6 @@ cuda_base_options = [
 ]
 
 cuda_packages = [
-    '--download-chaco',
     '--download-hdf5',
     '--download-hwloc',
     '--download-hypre',
@@ -114,8 +107,8 @@ custom_conf = {
     'packages': base_options + opt + packages,
     'minimal-debug': base_options + debug + minimal + minimal_not_complex,
     'minimal-opt': base_options + opt + minimal + minimal_not_complex,
-    'full-debug': base_options + debug + firedrake + firedrake_not_complex,
-    'full-opt': base_options + opt + firedrake + firedrake_not_complex,
+    'full-debug': base_options + debug + firedrake + minimal_not_complex,
+    'full-opt': base_options + opt + firedrake + minimal_not_complex,
     'complex-minimal-debug': base_options + debug + minimal + firedrake_complex,
     'complex-minimal-opt': base_options + opt + minimal + firedrake_complex,
     'complex-debug': base_options + debug + firedrake + firedrake_complex,
