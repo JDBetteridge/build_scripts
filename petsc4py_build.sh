@@ -5,7 +5,7 @@
 #     $PYTHON -m venv py3$($PYTHON -c "import sys; print(sys.version_info.minor)")
 # done
 
-ALL_ENVS="py38 py39 py310 py311"
+ALL_ENVS="py39 py310 py311 py312"
 
 export PETSC_DIR=/opt/petsc/firedrake/full-opt
 export LDFLAGS="-Wl,-rpath,/opt/mpich/lib -L/opt/mpich/lib"
@@ -24,7 +24,7 @@ do
     $VIRTUAL_ENV/bin/pip install -U pip
     $VIRTUAL_ENV/bin/pip install -U setuptools
     $VIRTUAL_ENV/bin/pip install -U wheel
-    $VIRTUAL_ENV/bin/pip install -U cython==0.29.36
+    $VIRTUAL_ENV/bin/pip install -U cython
     $VIRTUAL_ENV/bin/pip install -U numpy
     cd $PETSC_DIR/src/binding/petsc4py
     $VIRTUAL_ENV/bin/python setup.py bdist_wheel
@@ -46,7 +46,7 @@ do
     $VIRTUAL_ENV/bin/pip install -U pip
     $VIRTUAL_ENV/bin/pip install -U setuptools
     $VIRTUAL_ENV/bin/pip install -U wheel
-    $VIRTUAL_ENV/bin/pip install -U cython==0.29.36
+    $VIRTUAL_ENV/bin/pip install -U cython
     $VIRTUAL_ENV/bin/pip install -U numpy
     cd $PETSC_DIR/src/binding/petsc4py
     mkdir -p dist/debug
@@ -69,7 +69,7 @@ do
     $VIRTUAL_ENV/bin/pip install -U pip
     $VIRTUAL_ENV/bin/pip install -U setuptools
     $VIRTUAL_ENV/bin/pip install -U wheel
-    $VIRTUAL_ENV/bin/pip install -U cython==0.29.36
+    $VIRTUAL_ENV/bin/pip install -U cython
     $VIRTUAL_ENV/bin/pip install -U numpy
     cd $PETSC_DIR/src/binding/petsc4py
     mkdir -p dist/complex
