@@ -17,6 +17,7 @@ cd $PETSC_BASE_DIR
 
 rm -rf \
     $INSTALL/$REMOTE/cuda-*
+rm -rf $PETSC_BASE_DIR/arch-*
 
 git checkout firedrake
 git pull
@@ -28,7 +29,8 @@ cp $BASE/build_scripts/petsc_configure_prefix.py $PETSC_BASE_DIR/my_builds/confi
 # Build all the different PETSc configurations
 _ARCH=cuda
 # NVCC bug:
-export NVCC_PREPEND_FLAGS='-ccbin /opt/cuda/bin'
+# Potentially not needed anymore
+# export NVCC_PREPEND_FLAGS='-ccbin /opt/cuda/bin'
 for BUILD in debug opt
 do
     ./my_builds/configure_prefix.py \

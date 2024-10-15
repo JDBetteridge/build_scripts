@@ -8,7 +8,7 @@
 # slepc4py source needs patching with
 # `git apply slepc4py.patch` in SLEPc source directory
 
-ALL_ENVS="py38 py39 py310 py311"
+ALL_ENVS="py39 py310 py311 py312"
 
 export PETSC_DIR=/opt/petsc/firedrake/full-opt
 export SLEPC_DIR=/opt/slepc/firedrake/full-opt
@@ -28,7 +28,7 @@ do
     $VIRTUAL_ENV/bin/pip install -U pip
     $VIRTUAL_ENV/bin/pip install -U setuptools
     $VIRTUAL_ENV/bin/pip install -U wheel
-    $VIRTUAL_ENV/bin/pip install -U cython==0.29.36
+    $VIRTUAL_ENV/bin/pip install -U cython
     $VIRTUAL_ENV/bin/pip install -U numpy
     VERSION_STRING=$(python -c "import sys; v=sys.version_info; print(f'cp{v.major}{v.minor}')")
     $VIRTUAL_ENV/bin/pip install \
@@ -55,7 +55,7 @@ do
     $VIRTUAL_ENV/bin/pip install -U pip
     $VIRTUAL_ENV/bin/pip install -U setuptools
     $VIRTUAL_ENV/bin/pip install -U wheel
-    $VIRTUAL_ENV/bin/pip install -U cython==0.29.36
+    $VIRTUAL_ENV/bin/pip install -U cython
     $VIRTUAL_ENV/bin/pip install -U numpy
     VERSION_STRING=$(python -c "import sys; v=sys.version_info; print(f'cp{v.major}{v.minor}')")
     $VIRTUAL_ENV/bin/pip install \
@@ -83,7 +83,7 @@ do
     $VIRTUAL_ENV/bin/pip install -U pip
     $VIRTUAL_ENV/bin/pip install -U setuptools
     $VIRTUAL_ENV/bin/pip install -U wheel
-    $VIRTUAL_ENV/bin/pip install -U cython==0.29.36
+    $VIRTUAL_ENV/bin/pip install -U cython
     $VIRTUAL_ENV/bin/pip install -U numpy
     VERSION_STRING=$(python -c "import sys; v=sys.version_info; print(f'cp{v.major}{v.minor}')")
     $VIRTUAL_ENV/bin/pip install \
